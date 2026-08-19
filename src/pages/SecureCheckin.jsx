@@ -39,6 +39,9 @@ export default function SecureCheckin() {
   const [err, setErr] = useState('');
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const qrParam = params.get('qr');
+    if (qrParam) setQrToken(qrParam);
     (async () => {
       const [uRes, sRes, shRes] = await Promise.all([
         supabase.from('profiles').select('id, full_name'),
@@ -93,6 +96,7 @@ export default function SecureCheckin() {
           setQrToken(text);
           sc.stop();
           setScanning(false);
+          setTimeout(() => setStep(2), 800);
         },
         () => {},
       );
@@ -103,6 +107,8 @@ export default function SecureCheckin() {
   };
 
   const skipScan = () => { setScanning(false); setStep(2); };
+
+  const goSelfie = () => { setStep(2); };
 
   const startCamera = async () => {
     setFaceErr('');
@@ -269,6 +275,7 @@ export default function SecureCheckin() {
                 )}
                 {scanning && <button className="btn" onClick={() => { scannerRef.current?.stop(); setScanning(false); }}>Hủy</button>}
                 {qrToken && <div className="alert ok">QR hợp lệ: <code>{qrToken.slice(0, 16)}…</code></div>}
+                {qrToken && <button className="btn primary block mt16" onClick={goSelfie}>Quét xong → Chụp selfie</button>}
                 {!qrToken && (
                   <>
                     <div className="divider mt16"><span>Hoặc nhập mã thủ công</span></div>

@@ -57,7 +57,8 @@ export default function SecureAdmin() {
     setMsg('');
     const { data, error } = await supabase.rpc('generate_qr_token', { p_shift_id: shiftId || null });
     if (error) return setMsg('⚠️ ' + error.message);
-    const url = await QRCode.toDataURL(data.token, { width: 320, margin: 1, errorCorrectionLevel: 'M' });
+    const deepLink = `${window.location.origin}/secure?qr=${encodeURIComponent(data.token)}`;
+    const url = await QRCode.toDataURL(deepLink, { width: 320, margin: 1, errorCorrectionLevel: 'M' });
     setQrDataUrl(url);
     setQrToken(data.token);
     setQrExpiry(new Date(data.expires_at));
