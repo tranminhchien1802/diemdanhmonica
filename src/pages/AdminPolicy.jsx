@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
-import { PageHead, Field, Toggle } from '../components/ui';
+import { PageHead, Field } from '../components/ui';
 import { defaultPolicy } from '../data/seed';
 
 export default function Policy() {
@@ -70,32 +70,6 @@ export default function Policy() {
               <Field label="Tính OT khi vượt quá (phút)"><input className="input" type="number" min="0" value={p.otThreshold} onChange={(e) => set('otThreshold', Number(e.target.value))} /></Field>
             </div>
           </div>
-        </div>
-
-        <div className="card">
-          <h3>🔔 Thông báo Real-time</h3>
-          <div className="toggle-row">
-            <Toggle checked={p.notifyTelegram} onChange={(v) => set('notifyTelegram', v)} label="Telegram" />
-            <Toggle checked={p.notifyZalo} onChange={(v) => set('notifyZalo', v)} label="Zalo OA" />
-            <Toggle checked={p.notifyEmail} onChange={(v) => set('notifyEmail', v)} label="Email" />
-          </div>
-          {p.notifyTelegram && (
-            <div className="form-grid mt16">
-              <Field label="Telegram Bot Token"><input className="input" type="password" value={p.telegramBotToken} onChange={(e) => set('telegramBotToken', e.target.value)} placeholder="123456:ABC-DEF..." /></Field>
-              <Field label="Chat ID nhận thông báo"><input className="input" value={p.telegramChatId} onChange={(e) => set('telegramChatId', e.target.value)} placeholder="-100123456789" /></Field>
-            </div>
-          )}
-          {p.notifyZalo && (
-            <div className="form-grid mt16">
-              <Field label="Zalo OA ID"><input className="input" value={p.zaloOaId} onChange={(e) => set('zaloOaId', e.target.value)} placeholder="XXXXXX" /></Field>
-            </div>
-          )}
-          {p.notifyEmail && (
-            <div className="form-grid mt16">
-              <Field label="SMTP / Email nhận báo"><input className="input" type="email" value={p.smtpEmail} onChange={(e) => set('smtpEmail', e.target.value)} placeholder="hr@monica.vn" /></Field>
-            </div>
-          )}
-          <p className="muted small mt16">Khi có đơn mới cần duyệt hoặc nhân viên chấm công thành công, hệ thống sẽ bắn thông báo qua các kênh đã bật.</p>
         </div>
 
         <div className="form-actions sticky-bar">
