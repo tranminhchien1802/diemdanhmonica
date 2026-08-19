@@ -13,6 +13,8 @@ import AdminShifts from './pages/AdminShifts';
 import AdminPolicy from './pages/AdminPolicy';
 import AdminApprovals from './pages/AdminApprovals';
 import AdminReports from './pages/AdminReports';
+import SecureCheckin from './pages/SecureCheckin';
+import SecureAdmin from './pages/SecureAdmin';
 
 const canAdmin = (u) => u && ['super_admin', 'hr', 'leader'].includes(u.role);
 
@@ -39,6 +41,8 @@ export default function App() {
     <>
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/secure" element={<SecureCheckin />} />
+        <Route path="/secure-admin" element={<SecureAdmin />} />
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route
           path="/user"
