@@ -5,13 +5,14 @@
 ## Tính năng
 
 ### Phân hệ nhân viên (`/user`)
+- **Đăng ký tài khoản**: nhân viên tự đăng ký, tự tạo mã PIN 6 số trên trang đăng nhập.
 - **Chấm công thông minh**: check-in / check-out bằng mã PIN 6 số, chọn ca làm việc.
 - **Lịch sử cá nhân**: xem chi tiết theo ngày / tuần / tháng (giờ vào, giờ ra, trạng thái Đúng giờ / Đi muộn / Về sớm), thống kê tổng số công trong tháng.
 - **Cổng dịch vụ nội bộ**: đơn xin nghỉ phép (có / không lương), giải trình quên chấm công, đi muộn / về sớm, công tác; theo dõi trạng thái phê duyệt trực quan.
 - **Tra cứu bảng lương**: chi tiết lương cơ bản, phụ cấp, tăng ca, khấu trừ bảo hiểm / phạt theo tháng.
 
 ### Phân hệ quản trị & nhân sự (`/admin`)
-- **Nhân sự & phân quyền**: quản lý hồ sơ tập trung, vai trò Super Admin / HR Manager / Trưởng phòng / Nhân viên, dữ liệu sinh trắc học (PIN, khuôn mặt, GPS ngoại lệ).
+- **Nhân sự & phân quyền**: quản lý hồ sơ tập trung, vai trò Super Admin / HR Manager / Trưởng phòng / Nhân viên, dữ liệu sinh trắc học (PIN, khuôn mặt, GPS ngoại lệ); **cấp lại mã PIN** cho nhân viên bằng nút 🔑.
 - **Ca làm việc & lịch trình**: ca hành chính, ca gãy, ca xoay, ca đêm; quản lý ngày nghỉ tuần, grace period.
 - **Chính sách chấm công**: tọa độ trung tâm, bán kính chấm công, khung giờ làm việc, thời gian ân hạn, quy tắc tính tăng ca (OT), cấu hình thông báo Telegram / Zalo OA / Email.
 - **Phê duyệt đơn từ**: luồng cấp bậc Nhân viên → Trưởng phòng → HR; duyệt hàng loạt kèm ghi chú.

@@ -92,6 +92,30 @@ export function AppProvider({ children }) {
     return { ok: true, user };
   };
 
+  const register = (data) => {
+    if (db.users.some((u) => u.username === data.username)) return { ok: false, message: 'Tên đăng nhập đã tồn tại, vui lòng chọn tên khác' };
+    if (db.users.some((u) => u.pin === data.pin)) return { ok: false, message: 'Mã PIN này đã được sử dụng, vui lòng chọn mã khác' };
+    const nu = {
+      id: `u_${Date.now()}`,
+      role: 'employee',
+      status: 'active',
+      managerId: null,
+      avatar: null,
+      salaryBase: data.salaryBase || 8000000,
+      allowances: 0,
+      name: data.name,
+      username: data.username,
+      password: data.password,
+      pin: data.pin,
+      department: data.department,
+      position: data.position,
+      phone: data.phone || '',
+      email: data.email || '',
+    };
+    updateDb((d) => { d.users = [...d.users, nu]; return d; });
+    return { ok: true, user: nu };
+  };
+
   const logout = () => setSession(null);
 
   const notify = (message, type = 'info') => {
@@ -230,7 +254,7 @@ export function AppProvider({ children }) {
 
   const value = {
     db, session, currentUser, toasts,
-    login, loginByPin, logout, resetDb, toast,
+    login, loginByPin, register, logout, resetDb, toast,
     checkIn, checkOut, addRequest, approveRequest, batchApprove,
     saveUser, deleteUser, saveShift, deleteShift, savePolicy,
     markAllRead, notify,

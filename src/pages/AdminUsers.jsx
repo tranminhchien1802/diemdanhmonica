@@ -20,6 +20,8 @@ export default function Users() {
   const [deptF, setDeptF] = useState('all');
   const [roleF, setRoleF] = useState('all');
   const [detail, setDetail] = useState(null);
+  const [pinUser, setPinUser] = useState(null);
+  const [newPin, setNewPin] = useState('');
 
   const filtered = useMemo(() => {
     return db.users.filter((u) => {
@@ -55,6 +57,16 @@ export default function Users() {
       deleteUser(u.id);
       toast('Đã xóa', 'info');
     }
+  };
+
+  const submitPin = (e) => {
+    e.preventDefault();
+    if (!/^\d{6}$/.test(newPin)) { toast('Mã PIN phải đủ 6 chữ số', 'error'); return; }
+    if (db.users.some((u) => u.pin === newPin && u.id !== pinUser.id)) { toast('Mã PIN đã được sử dụng bởi nhân sự khác', 'error'); return; }
+    saveUser({ ...pinUser, pin: newPin });
+    toast(`Đã cấp lại mã PIN mới cho ${pinUser.name}`);
+    setPinUser(null);
+    setNewPin('');
   };
 
   const attCount = (uid) => db.attendance.filter((a) => a.userId === uid).length;
@@ -103,6 +115,7 @@ export default function Users() {
                   <td>
                     <div className="row-actions">
                       <button className="icon-btn" title="Chi tiết" onClick={() => setDetail(u)}>👁</button>
+                      <button className="icon-btn" title="Cấp lại mã PIN" onClick={() => { setPinUser(u); setNewPin(''); }}>🔑</button>
                       <button className="icon-btn" title="Sửa" onClick={() => openEdit(u)}>✏️</button>
                       <button className="icon-btn danger" title="Xóa" onClick={() => remove(u)}>🗑</button>
                     </div>
@@ -154,6 +167,22 @@ export default function Users() {
           <div className="form-actions">
             <button type="button" className="btn" onClick={() => setOpen(false)}>Hủy</button>
             <button type="submit" className="btn primary">Lưu</button>
+          </div>
+        </form>
+      </Modal>
+
+      <Modal open={!!pinUser} onClose={() => setPinUser(null)} title={`Cấp lại mã PIN cho ${pinUser?.name || ''}`} width={420}>
+        <form onSubmit={submitPin}>
+          <p className="muted">Nhập mã PIN mới gồm 6 chữ số. Nhân viên sẽ dùng mã này để check-in/check-out.</p>
+          <div className="mt8">
+            <Field label="Mã PIN mới (6 số)" required>
+              <input className="input" maxLength="6" inputMode="numeric" autoFocus value={newPin} onChange={(e) => setNewPin(e.target.value.replace(/\D/g, ''))} placeholder="••••••" required />
+            </Field>
+          </div>
+          {db.users.some((u) => u.pin === newPin && u.id !== pinUser?.id) && <div className="alert err">Mã PIN đã được sử dụng bởi nhân sự khác</div>}
+          <div className="form-actions mt16">
+            <button type="button" className="btn" onClick={() => setPinUser(null)}>Hủy</button>
+            <button type="submit" className="btn primary">🔑 Cấp mã PIN mới</button>
           </div>
         </form>
       </Modal>
