@@ -30,7 +30,7 @@
 | Nhân viên        | emp1     | emp123    | 333444  |
 | Nhân viên        | emp2     | emp123    | 555666  |
 
-Trang đăng nhập có sẵn nút **Đăng nhập nhanh demo** theo từng vai trò. Tab **Chấm công PIN** cho phép check-in/check-out trực tiếp bằng mã PIN.
+Trang đăng nhập có sẵn nút **Đăng nhập nhanh demo** theo từng vai trò. Mã PIN được tạo khi **đăng ký tài khoản** và dùng để xác nhận check-in / check-out.
 
 ## Chạy local
 

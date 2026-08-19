@@ -8,12 +8,11 @@ const depts = ['Phòng Kỹ thuật', 'Phòng Kinh doanh', 'Phòng Kế toán', 
 const emptyReg = { name: '', username: '', password: '', pin: '', confirmPin: '', department: 'Phòng Kỹ thuật', position: '', phone: '', email: '' };
 
 export default function Login() {
-  const { login, loginByPin, register, currentUser, db, toast } = useApp();
+  const { login, register, currentUser, db, toast } = useApp();
   const navigate = useNavigate();
   const [tab, setTab] = useState('account');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [pin, setPin] = useState('');
   const [err, setErr] = useState('');
   const [reg, setRegForm] = useState(emptyReg);
   const [regErr, setRegErr] = useState('');
@@ -46,17 +45,6 @@ export default function Login() {
 
   const setRegField = (k, v) => setRegForm((f) => ({ ...f, [k]: v }));
 
-  const pressPin = (v) => {
-    if (err) setErr('');
-    const next = (pin + v).slice(0, 6);
-    setPin(next);
-    if (next.length === 6) {
-      const res = loginByPin(next);
-      if (res.ok) navigate(res.user.role === 'employee' ? '/user' : '/admin');
-      else { setErr(res.message); setTimeout(() => setPin(''), 300); }
-    }
-  };
-
   const quick = (user) => {
     const res = login(user.username, user.password);
     if (res.ok) navigate(res.user.role === 'employee' ? '/user' : '/admin');
@@ -81,7 +69,6 @@ export default function Login() {
       <div className="login-card">
         <div className="tabs">
           <button className={`tab ${tab === 'account' ? 'active' : ''}`} onClick={() => { setTab('account'); setErr(''); }}>Đăng nhập</button>
-          <button className={`tab ${tab === 'pin' ? 'active' : ''}`} onClick={() => { setTab('pin'); setErr(''); }}>Chấm công PIN</button>
           <button className={`tab ${tab === 'register' ? 'active' : ''}`} onClick={() => { setTab('register'); setErr(''); }}>Đăng ký</button>
         </div>
 
@@ -134,7 +121,7 @@ export default function Login() {
             </form>
             <p className="muted small mt16">Sau khi đăng ký, bạn sẽ có vai trò <b>Nhân viên</b> và được chấm công bằng mã PIN vừa tạo. Quyền quản trị do Super Admin phân công.</p>
           </div>
-        ) : tab === 'account' ? (
+        ) : (
           <form onSubmit={doAccount} className="login-form">
             <h2>Xin chào!</h2>
             <p className="muted">Đăng nhập để tiếp tục đến phân hệ của bạn</p>
@@ -162,25 +149,6 @@ export default function Login() {
               })}
             </div>
           </form>
-        ) : (
-          <div className="pin-panel">
-            <h2>Chấm công bằng mã PIN</h2>
-            <p className="muted">Nhập mã PIN 6 số để check-in / check-out</p>
-            <div className={`pin-dots ${err ? 'shake' : ''}`}>
-              {[0, 1, 2, 3, 4, 5].map((i) => <span key={i} className={i < pin.length ? 'filled' : ''} />)}
-            </div>
-            {err ? <div className="alert err">{err}</div> : <div className="pin-hint">Mã PIN demo: 123456 / 654321 / 333444</div>}
-            <div className="pin-pad">
-              {['1', '2', '3', '4', '5', '6', '7', '8', '9', '', '0', '⌫'].map((v, i) =>
-                v === '' ? <span key={i} /> : (
-                  <button key={i} className="pin-key" onClick={() => v === '⌫' ? setPin(pin.slice(0, -1)) : pressPin(v)}>
-                    {v === '⌫' ? <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="20"><path d="M21 4H8l-7 8 7 8h13a1 1 0 001-1V5a1 1 0 00-1-1z" /><path d="M18 9l-6 6M12 9l6 6" /></svg> : v}
-                  </button>
-                )
-              )}
-            </div>
-            <p className="muted small">Các tài khoản khác xem mục <b>Tài khoản mẫu</b> ở tab Đăng nhập</p>
-          </div>
         )}
       </div>
     </div>
